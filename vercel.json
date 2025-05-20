@@ -2,35 +2,26 @@
   "version": 2,
   "builds": [
     {
-      "src": "backend/checkout_backend/src/main.py",
+      "src": "backend/checkout_backend/main.py", // Ponto de entrada do seu Flask
       "use": "@vercel/python"
     },
-	{
-      "src": "backend_src/main.py",
-      "use": "@vercel/python"
-    },
-	{
-      "src": "frontend/checkout_frontend/package.json",
+    {
+      "src": "frontend/checkout_frontend/package.json", // Ponto de entrada do seu frontend
       "use": "@vercel/node",
-      "config": { "includeFiles": ["frontend/**"] }
+      "config": {
+        "installCommand": "npm install",
+        "buildCommand": "npm run build"
+      }
     }
   ],
   "routes": [
     {
-      "src": "backend/checkout_backend/",
-      "dest": "src/main.py"
-    },
-	{
-      "src": "backend_src/",
-      "dest": "/main.py"
+      "src": "/api/(.*)", // Todas as requisições para /api/... vão para o seu backend Flask
+      "dest": "backend/checkout_backend/main.py"
     },
     {
-      "src": "backend_src/static/",
-      "dest": "/index.html"
-    },
-	{
-      "src": "backend/checkout_backend/src/static",
-      "dest": "/index.html"
+      "src": "/(.*)", // Todas as outras requisições vão para o frontend (HTML, JS, CSS)
+      "dest": "frontend/checkout_frontend/dist/$1" // Assuming Vite builds to 'dist'
     }
   ]
 }
