@@ -2,18 +2,35 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/main.py",
+      "src": "backend/checkout_backend/src/main.py",
       "use": "@vercel/python"
+    },
+	{
+      "src": "backend_src/main.py",
+      "use": "@vercel/python"
+    },
+	{
+      "src": "frontend/checkout_frontend/package.json",
+      "use": "@vercel/node",
+      "config": { "includeFiles": ["frontend/**"] }
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "backend/checkout_backend/",
       "dest": "src/main.py"
-    }
+    },
+	{
+      "src": "backend_src/",
+      "dest": "/main.py"
+    },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "backend_src/static/",
+      "dest": "/index.html"
+    },
+	{
+      "src": "backend/checkout_backend/src/static",
+      "dest": "/index.html"
     }
   ]
 }
